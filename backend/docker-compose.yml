@@ -1,0 +1,53 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+    # logging:
+    #    driver: none
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: "lelarge.armelle@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    ports:
+      - "16543:80"
+    depends_on: 
+      - db
+    logging: 
+      driver: none
+
+  api:
+    container_name: groupamania-api
+    build:
+      context: ./
+      target: production
+    image: groupamania-api
+    depends_on: 
+      - db
+    ports:
+      - "3000:3000"
+    environment: 
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 5423
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_NAME: groupamania
+    links:
+      - db
+    volumes:
+      - './:/src'
+      - '/src/node_modules'
+
+volumes:
+  db:
+    driver: local

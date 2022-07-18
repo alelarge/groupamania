@@ -8,23 +8,12 @@ const path = require('path');
 const rateLimit = require("express-rate-limit");
 const pool = require('./db');
 
-/*
-pool.query('SELECT * FROM user_account', (err, res) => {
-    console.log(err, res)
-    pool.end()
-});
-*/
 
-/*
-async function test() {
-    let res = await pool.query(`
-    INSERT INTO post (id_user, title, content, image_url, created_on, likes, usersLiked)
-    VALUES (2, 'Super post', 'My content', 'http://sdfsfd.com', CURRENT_TIMESTAMP, 0, '{}')
-    `);
-    console.log(res);
-}
-test();
-*/
+// pool.query('SELECT * FROM user_account', (err, res) => {
+//     console.log(err, res)
+// });
+
+
 
 // Express middleware to automatically parse JSON contained in the body
 app.use(express.json());

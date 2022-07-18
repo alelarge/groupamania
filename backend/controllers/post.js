@@ -1,4 +1,4 @@
-const post = require("../models/post");
+const postModel = require("../models/post");
 // Module of Node 'file system' (image uploads and modifications) in this case
 const fs = require("fs");
 
@@ -16,9 +16,9 @@ exports.createPost = (req, res, next) => {
     ...postObject, // Copy all the properties of postObject
     userId: req.auth.userId,
     // We create the URL of the image, we want to make it dynamic thanks to the segments of the URL
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    image_url: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
   };
-  post
+  postModel
     // Saving the post in the database
     .create(newPost)
     .then(() => res.status(201).json({ message: "Post enregistré!" }))
@@ -40,43 +40,48 @@ exports.modifyPost = (req, res, next) => {
   }
 
   // Find the post in the database by its id
-  Post.findOne({ _id: req.params.id }).then((post) => {
+  postModel.findOne(req.params.id).then((post) => {
+    console.log('found post', post)
     if (!post) {
       res.status(404).json({
         error: new Error("No such post!"),
       });
     }
     // Check if the user editing the post is different than the one who created it
-    if (post.userId !== req.auth.postId) {
+    if (post.id_user !== req.auth.postId) {
       res.status(403).json({
         error: new Error("Unauthorized request!"),
       });
+      return;
     }
 
     // update the post
-    Post.updateOne(
-      { _id: req.params.id },
+    postModel.updateOne(
       {
+        id: req.params.id,
         ...postObject,
         // Using a ternary operator to update the image if it has been updated
-        imageUrl: req.file
+        image_url: req.file
           ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
           : undefined,
       }
     )
       .then(() => {
         if (req.file) {
+          console.log('file to upload', post)
           // Split the image url on "/"
-          let splitedUrl = post.imageUrl.split("/");
+          let splitedUrl = post.image_url.split("/");
           // Get the last segment (image name)
           let filename = splitedUrl[splitedUrl.length - 1];
           // Delete the old image from the server
+          console.log('filename', filename);
           fs.unlink(__dirname + "/../images/" + filename, (err) => {
             if (err) {
               console.log(err);
             }
           });
         }
+        console.log('return 200')
         res.status(200).json({ message: " Modified post!" });
       })
       .catch((error) => res.status(400).json({ error }));
@@ -85,22 +90,24 @@ exports.modifyPost = (req, res, next) => {
 
 // Delete several post
 exports.deletePost = (req, res, next) => {
-  Post.findOne({ _id: req.params.id }).then((post) => {
+  postModel.findOne(req.params.id).then((post) => {
     if (!post) {
       res.status(404).json({
         error: new Error("No such post!"),
       });
     }
-    if (post.userId !== req.auth.userId) {
+    if (post.id_user !== req.auth.userId) {
       res.status(403).json({
         error: new Error("Unauthorized request!"),
       });
+      return;
     }
     // delete one post
-    Post.deleteOne({ _id: req.params.id })
+    postModel.deleteOne(req.params.id)
       .then(() => {
         // Split the image url on "/"
-        let splitedUrl = post.imageUrl.split("/");
+        console.log('after delete post', post);
+        let splitedUrl = post.image_url.split("/");
         // Get the last segment (image name)
         let filename = splitedUrl[splitedUrl.length - 1];
         // Delete the old image from the server
@@ -109,11 +116,13 @@ exports.deletePost = (req, res, next) => {
             console.log(err);
           }
         });
+        console.log('Removed image', filename);
         res.status(200).json({
           message: "Deleted!",
         });
       })
       .catch((error) => {
+        console.log('error', error);
         res.status(400).json({
           error: error,
         });
@@ -124,7 +133,7 @@ exports.deletePost = (req, res, next) => {
 // Get a single post
 exports.getOnePost = (req, res, next) => {
   // returns a single post based on the comparison function passed to it (by its unique id)
-  Post.findOne({ _id: req.params.id })
+  postModel.getOnePost(req.params.id)
     .then((post) => res.status(200).json(post))
     .catch((error) => res.status(404).json({ error }));
 };
@@ -132,53 +141,40 @@ exports.getOnePost = (req, res, next) => {
 // Returns an array of all the base posts of data
 exports.getAllPost = (req, res, next) => {
   // Return all the posts
-  Post.find()
+  postModel.getAllPost()
     .then((posts) => res.status(200).json(posts))
     .catch((error) => res.status(400).json({ error }));
 };
 
-// Allows you to "like" or "dislike" a post
-exports.likeorDislike = (req, res, next) => {
+// Allows you to "like" a post
+exports.like = (req, res, next) => {
+  console.log('coucou')
   // Like present in the body
   let like = req.body.like;
   // Get userID
   let userId = req.body.userId;
 
-  Post.findOne({
-    _id: req.params.id,
-  })
+  postModel.findOne(req.params.id)
     .then((post) => {
+      console.log('post', post);
+      console.log('like', like);
       // If it's a like
       if (like === 1) {
-        // Check that the user didn't already liked or disliked the post
-        if (
-          !post.usersLiked.includes(userId) &&
-          !post.usersDisliked.includes(userId)
-        ) {
-          Post.updateOne(
-            {
-              _id: req.params.id,
-            },
-            {
-              // We push the user id to the like array and we increment the counter by 1
-              $push: {
-                usersLiked: userId,
-              },
-              $inc: {
-                likes: +1,
-              },
-            }
-          )
-            .then(() =>
+        console.log('like = 1');
+        // Check that the user didn't already liked the post
+        if (!post.usersliked.includes(userId)) {
+          console.log('Will addLike');
+          postModel.addLike(req.params.id, req.auth.userId)
+            .then(() => {
               res.status(200).json({
                 message: "Like added !",
               })
-            )
-            .catch((error) =>
+            })
+            .catch((error) => {
               res.status(400).json({
                 error,
               })
-            );
+            });
         } else {
           // It is not possible to like twice the same post
           res.status(400).json({
@@ -186,110 +182,22 @@ exports.likeorDislike = (req, res, next) => {
           });
         }
       }
-      //  If it's a dislike
-      if (like === -1) {
-        // Check that the user didn't already liked or disliked the post
-        if (
-          !post.usersDisliked.includes(userId) &&
-          !post.usersLiked.includes(userId)
-        ) {
-          Post.updateOne(
-            {
-              _id: req.params.id,
-            },
-            // We push the user id to the dislike array and we increment dislike counter by 1
-            {
-              $push: {
-                usersDisliked: userId,
-              },
-              $inc: {
-                dislikes: +1,
-              },
-            }
-          )
-            .then(() => {
-              res.status(200).json({
-                message: "Dislike added !",
-              });
-            })
-            .catch((error) =>
-              res.status(400).json({
-                error,
-              })
-            );
-        } else {
-          res.status(400).json({
-            // It is not possible to dislike twice the same post
-            message: "Cannot disliked!",
-          });
-        }
-      }
       
-      // cancel a like or dislike
+      // cancel a like 
       if (like === 0) {
-        if (post.usersLiked.includes(userId)) {
+        if (post.usersliked.includes(userId)) {
           // If it's about canceling a like
-          Post.updateOne(
-            {
-              _id: req.params.id,
-            },
-            // Remove the user id from the like array
-            {
-              $pull: {
-                usersLiked: userId,
-              },
-              $inc: {
-                likes: -1,
-              }, // We increment by -1
-            }
-          )
-            .then(() =>
-              res.status(200).json({
-                message: "Like removed !",
-              })
-            )
-            .catch((error) =>
-              res.status(400).json({
-                error,
-              })
-            );
-        }
-
-        if (post.usersDisliked.includes(userId)) {
-          // If it's about canceling a dislike
-          Post.updateOne(
-            {
-              _id: req.params.id,
-            },
-            {
-              // Remove the user id from the dislike array
-              $pull: {
-                usersDisliked: userId,
-              },
-              $inc: {
-                dislikes: -1,
-              }, // We increment by -1
-            }
-          )
-            .then(() =>
-              res.status(200).json({
-                message: "Dislike remove !",
-              })
-            )
-            .catch((error) =>
-              res.status(400).json({
-                error,
-              })
-            );
-        }
-
-        if (
-          !post.usersDisliked.includes(userId) &&
-          !post.usersLiked.includes(userId)
-        ) {
-          res.status(400).json({
-            message: "No like or dislike to cancel!",
-          });
+          postModel.removeLike(req.params.id, req.auth.userId)
+          .then(() => {
+            res.status(200).json({
+              message: "Like removed !",
+            })
+          })
+          .catch((error) => {
+            res.status(400).json({
+              error,
+            })
+          })
         }
       }
     })

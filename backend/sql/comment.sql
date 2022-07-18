@@ -3,11 +3,11 @@ CREATE TABLE comment(
     id_post INT NOT NULL,
     id_user INT NOT NULL,
     content TEXT,
-    created_on DESC TIMESTAMP NOT NULL,
+    created_on TIMESTAMP NOT NULL,
     CONSTRAINT fk_id_post_c
         FOREIGN KEY (id_post)
-        REFERENCES posts(id_post) ON DELETE CASCADE,
+        REFERENCES post(id) ON DELETE CASCADE,
     CONSTRAINT fk_id_user_c
         FOREIGN KEY (id_user)
-        REFERENCES users(id_user) ON DELETE SET NULL
+        REFERENCES user_account(id) ON DELETE SET NULL
 )

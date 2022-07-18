@@ -11,9 +11,9 @@ exports.create = async (user) => {
 }
 
 exports.findOne = async (email) => {
-    console.log('email', email);
+    console.log('findOne email', email);
 
     let res = await pool.query(`SELECT * FROM user_account WHERE email = $1`, [email]);
-    
+    console.log('res', res);
     return res.rows[0];
 }
