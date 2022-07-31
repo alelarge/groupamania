@@ -8,8 +8,6 @@ exports.createPost = (req, res, next) => {
   console.log('createPost', typeof req.body.post)
   // Get the post data
   const postObject = JSON.parse(req.body.post);
-  // In case the user added an _id, we remove it from the post object
-  delete postObject._id;
 
   // Instantiate a new post
   const newPost = {

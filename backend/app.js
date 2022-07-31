@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
+const commentRoutes = require('./routes/comment');
 const path = require('path');
 const rateLimit = require("express-rate-limit");
 const pool = require('./db');
@@ -38,5 +39,7 @@ const limiter = rateLimit({
 app.use(limiter);
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/comment', commentRoutes);
+
 
 module.exports = app;
