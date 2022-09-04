@@ -4,6 +4,7 @@ import {
     logout,
   } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 
 function LoggedIn({ children }) {
@@ -29,7 +30,7 @@ function LoggedIn({ children }) {
                 <nav className="LoggedIn__nav">
                     <ol>
                         <li className="LoggedIn__nav__item"><a href="#">Groupomania</a></li>
-                        <li className="LoggedIn__nav__item"><a href="#">Créer un post</a></li>
+                        <li className="LoggedIn__nav__item"><Link to="/post/create">Créer un post</Link></li>
                         <li className="LoggedIn__nav__item"><a onClick={handleLogout} href="#">Se déconnecter</a></li>
                     </ol>
                 </nav>

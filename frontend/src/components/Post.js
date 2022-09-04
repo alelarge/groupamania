@@ -3,12 +3,13 @@ import NotConnected from "../layouts/NotConnected";
 // import { useFetch } from '../utils/hooks'
 
 function Post(props) {
+    console.log('props', props);
     const [post, updatePost] = useState("");
     const [likePost, updateLikepost] = useState("");
 
     return (
         <div className="Post">
-            <h1>{props.title}</h1>
+            <h1>{props.data.title}</h1>
         </div>
     );
 }

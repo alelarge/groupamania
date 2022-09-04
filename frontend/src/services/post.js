@@ -3,23 +3,32 @@ import { api } from './api'
 
 export const postApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getPosts: build.mutation({
-            query: (credentials) => ({
+        getPosts: build.query({
+            query: () => ({
               url: 'post',
               method: 'GET',
             }),
-          }),
+            providesTags: (_post, _err, id) => [{ type: 'Posts', id }],
+        }),
+        addPost: build.mutation({
+            query: (body) => ({
+              url: 'post',
+              method: 'POST',
+              body,
+            }),
+            invalidatesTags: ['Posts'],
+        }),
     }),
 });
 
 export const {
-    // useAddPostMutation,
+    useAddPostMutation,
     // useDeletePostMutation,
     // useGetPostQuery,
     useGetPostsQuery,
     useGetPostsMutation,
     //useUpdatePostMutation,
-    //useGetErrorProneQuery,
+    useGetErrorProneQuery,
   } = postApi
   
   export const {
