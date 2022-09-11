@@ -14,10 +14,28 @@ export const postApi = api.injectEndpoints({
             query: (body) => ({
               url: 'post',
               method: 'POST',
+              headers: {
+                //'content-type': 'multipart/form-data',
+              },
               body,
             }),
             invalidatesTags: ['Posts'],
         }),
+        modifyPost: build.mutation({
+          query: (body, id) => ({
+            url: `post/${id}`,
+            method: 'PUT',
+            body,
+          }),
+          invalidatesTags: ['Posts'],
+        }),
+        deletePost: build.mutation({
+          query: (id) => ({
+            url: `post/${id}`,
+            method: 'DELETE',
+          }),
+          invalidatesTags: ['Posts'],
+      }),
     }),
 });
 

@@ -7,6 +7,7 @@ const fs = require("fs");
 exports.createPost = (req, res, next) => {
   console.log('createPost', typeof req.body.post)
   // Get the post data
+  console.log('req.body', req.body);
   const postObject = JSON.parse(req.body.post);
 
   // Instantiate a new post
@@ -14,7 +15,7 @@ exports.createPost = (req, res, next) => {
     ...postObject, // Copy all the properties of postObject
     userId: req.auth.userId,
     // We create the URL of the image, we want to make it dynamic thanks to the segments of the URL
-    image_url: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    image_url: `/images/${req.file.filename}`,
   };
   postModel
     // Saving the post in the database

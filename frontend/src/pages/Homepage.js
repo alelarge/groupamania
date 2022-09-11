@@ -26,7 +26,7 @@ function Homepage() {
                 <h1>Hello Homepage</h1>
                 <section className="Homepage__postList">
                     {posts.map((post) => (
-                        <Post data={post}></Post>
+                        <Post data={post} key={post.id}></Post>
                     ))}
                 </section>
             </div>

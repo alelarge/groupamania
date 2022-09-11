@@ -10,24 +10,15 @@ function Post(props) {
     return (
         <div className="Post">
             <h1>{props.data.title}</h1>
+            <h2>{props.data.content}</h2>
+            <img src={`${process.env.REACT_APP_API_BASE_URL}${props.data.image_url}`} />
+            <p>{props.data.likes}</p>
         </div>
     );
 }
 
 export default Post;
 
-
-    // dispatch(
-    //   login({
-    //     token: response.data.token,
-    //     userId: response.data.userId,
-    //     email: email,
-    //   })
-    // );
-
-    //     // Redirect user to homepage
-    //     navigate("/homepage");
-    //   })
 
 
 

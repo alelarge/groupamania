@@ -17,6 +17,7 @@ const pool = require('./db');
 
 
 // Express middleware to automatically parse JSON contained in the body
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());
 
 app.use((req, res, next) => {

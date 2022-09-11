@@ -5,6 +5,8 @@ import {
   } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+// import styled from 'styled-components'
+// import logo from '../assets/logo.png'
 
 
 function LoggedIn({ children }) {
@@ -24,10 +26,17 @@ function LoggedIn({ children }) {
         navigate('/login');
     }
 
+    // const groupamaniaBanner = styled.span`
+    // `
+
     return (
         <div className="LoggedIn">
             <header className="LoggedIn-header">
                 <nav className="LoggedIn__nav">
+                {/* <div className='groupamania-banner'>
+                    <img src={logo} alt='groupamania' className='groupamania-logo />
+                    <h1 className='groupamania-title'>{title}</h1>
+                </div> */}
                     <ol>
                         <li className="LoggedIn__nav__item"><a href="#">Groupomania</a></li>
                         <li className="LoggedIn__nav__item"><Link to="/post/create">Créer un post</Link></li>

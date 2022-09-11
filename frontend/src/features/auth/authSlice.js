@@ -1,20 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userApi } from '../../services/user';
 
-const initialState = {
+const getInitialSate = () => {
+  let initialState = {
     isAuthenticated: false,
     token: null,
     userId: null,
     firstname: null,
     lastname: null,
     email: null,
-};
+  };
+  const authJson = localStorage.getItem('auth');
+
+  if (authJson) {
+    const auth  = JSON.parse(authJson);
+    initialState.isAuthenticated = true;
+    initialState.token = auth.token;
+    initialState.userId = auth.userId
+  }
+
+  return initialState;
+}
+
+const initialState = getInitialSate();
 
 export const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state, action) => state = initialState, // déconnexion
+    logout: (state, action) => {
+      localStorage.removeItem('auth');
+      state = getInitialSate();
+    }, // déconnexion
   },
   extraReducers: (builder) => {
     builder
@@ -27,6 +44,11 @@ export const userSlice = createSlice({
         state.token = action.payload.token;
         state.userId = action.payload.userId;
         state.isAuthenticated = true;
+
+        localStorage.setItem('auth', JSON.stringify({
+          token: action.payload.token,
+          userId: action.payload.userId
+        }));
       })
       .addMatcher(userApi.endpoints.login.matchRejected, (state, action) => {
         console.log('rejected', action);

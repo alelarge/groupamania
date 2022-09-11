@@ -1,39 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
+import {
+  useSignupMutation,
+} from '../services/user'
 import NotConnected from "../layouts/NotConnected";
-const axios = require("axios").default;
 
 function SignUp() {
+  const navigate = useNavigate();
   const [lastName, updateLastName] = useState("");
   const [name, updateName] = useState("");
   const [email, updateEmail] = useState("");
   const [password, updatePassword] = useState("");
   const [passwordConfirmed, updatePasswordConfirmed] = useState("");
+  const [signup, { isSuccess }] = useSignupMutation();
+  useEffect(() => {
+    console.log('useEffect')
+    if (isSuccess) {
+      console.log('isSuccess')
+      navigate('/login');
+    }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
-    // Appeler l'API et gérer la réponse
-    // Make a request for a user with a given ID
-    axios
-      .post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/signup`,
-          {
-            password: password,
-            email: email,
-            firstname: name,
-            lastname: lastName
-          }
-        )
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
-};
+    signup({
+      password: password,
+      email: email,
+      firstname: name,
+      lastname: lastName
+    });
+  };
 
   return (
     <NotConnected>

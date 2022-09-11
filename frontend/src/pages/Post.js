@@ -7,10 +7,14 @@ import {
   useGetPostsQuery,
   useGetErrorProneQuery,
 } from './../services/post'
+import {
+  useSignupMutation,
+} from '../services/user'
 // import './PostsManager.css'
 
 export const AddPost = () => {
-  const initialValue = { name: '' }
+  const initialValue = { title: '', content: '' }
+  const [image, setImage] = useState();
   const [post, setPost] = useState(initialValue)
   const [addPost, { isLoading }] = useAddPostMutation()
 
@@ -21,31 +25,42 @@ export const AddPost = () => {
     }))
   }
 
+  const handleChangeImage = ({ target }) => {
+    console.log('file', target.files);
+    setImage(target.files[0]);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await addPost(post)
+
+    const newPost = new FormData();    
+    newPost.append("image", image, "burrata-cremeuse.jpeg");
+    newPost.append("post", JSON.stringify(post));
+
+    await addPost(newPost)
     setPost(initialValue)
   }
 
   return (
     <LoggedIn>
       <form onSubmit={handleSubmit}>
-        {/* <div className="row"> */}
-          {/* <div className="column column-3"> */}
-            <input
-              name="name"
-              placeholder="New post name"
-              type="text"
-              onChange={handleChange}
-              value={post.name}
-            />
-          {/* </div> */}
-          {/* <div className="column column-1"> */}
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? 'Adding...' : 'Add Post'}
-            </button>
-          {/* </div> */}
-        {/* </div> */}
+        <input
+          name="title"
+          placeholder="New post name"
+          type="text"
+          onChange={handleChange}
+          value={post.title}
+        />
+        <textarea 
+          name="content" 
+          onChange={handleChange}
+          value={post.content}
+        >
+        </textarea>
+        <input type="file" name="image" onChange={handleChangeImage}></input>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Adding...' : 'Add Post'}
+        </button>
       </form>
     </LoggedIn>
   )
@@ -110,8 +125,8 @@ export const Post = () => {
           List with duplicate subscription:
           <PostList />
         </div>
-        </div>
       </div>
+    </div>
     // </div>
   )
 }
