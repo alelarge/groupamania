@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     useLoginMutation,
-  } from '../services/user'
+} from '../services/user'
 import { Link } from "react-router-dom";
 import NotConnected from "../layouts/NotConnected";
 
@@ -32,31 +32,37 @@ function Login() {
     return (
         <NotConnected>
             <div className="Login">
-                <form onSubmit={handleSubmit} className="Login-form">
-                    <label>
-                        Adresse email :
-            <input
-                            type="email"
-                            onChange={(e) => {
-                                updateEmail(e.target.value);
-                            }}
-                            value={email}
-                            placeholder="Tapez votre email"
-                        />
-                    </label>
-                    <label>
-                        Mot de passe :
-            <input
-                            type="password"
-                            onChange={(e) => {
-                                updatePassword(e.target.value);
-                            }}
-                            value={password}
-                            placeholder="Tapez votre mot de passe"
-                        />
-                    </label>
-                    <input type="submit" value="Envoyer" />
-                </form>
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={handleSubmit} className="Login-form">
+                            <div class="mb-3 text-start">
+                                <label className="form-label">Adresse email :</label>
+                                <input
+                                    className="form-control"
+                                    type="email"
+                                    onChange={(e) => {
+                                        updateEmail(e.target.value);
+                                    }}
+                                    value={email}
+                                    placeholder="Tapez votre email"
+                                />
+                            </div>
+                            <div class="mb-3 text-start">
+                                <label>Mot de passe :</label>
+                                <input
+                                    className="form-control"
+                                    type="password"
+                                    onChange={(e) => {
+                                        updatePassword(e.target.value);
+                                    }}
+                                    value={password}
+                                    placeholder="Tapez votre mot de passe"
+                                />
+                            </div>
+                            <input className="btn btn-primary" type="submit" value="Envoyer" />
+                        </form>
+                    </div>
+                </div>
                 <Link to="/create-account">Créer un compte</Link>
             </div>
         </NotConnected>

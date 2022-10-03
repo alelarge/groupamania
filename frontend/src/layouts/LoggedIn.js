@@ -25,7 +25,7 @@ function LoggedIn({ children }) {
     }
 
     return (
-        <div className="LoggedIn">
+        <div className="container LoggedIn">
             <header className="LoggedIn-header">
                 <nav className="LoggedIn__nav">
                 {/* <div className='groupamania-banner'>
