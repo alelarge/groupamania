@@ -17,3 +17,11 @@ exports.findOne = async (email) => {
     console.log('res', res);
     return res.rows[0];
 }
+
+exports.findOneById = async (id) => {
+    console.log('findOneById', id);
+
+    let res = await pool.query(`SELECT * FROM user_account WHERE id = $1`, [id]);
+    console.log('res', res);
+    return res.rows[0];
+}

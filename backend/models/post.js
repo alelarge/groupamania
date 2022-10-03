@@ -19,7 +19,7 @@ exports.getOnePost = async (postId) => {
 };
 
 exports.getAllPost = async () => {
-    let res = await pool.query(`SELECT * FROM post`);
+    let res = await pool.query(`SELECT * FROM post ORDER BY created_on DESC`);
     
     return res.rows;
 };

@@ -2,7 +2,6 @@ const postModel = require("../models/post");
 // Module of Node 'file system' (image uploads and modifications) in this case
 const fs = require("fs");
 
-
 // Create a post
 exports.createPost = (req, res, next) => {
   console.log('createPost', typeof req.body.post)
@@ -29,6 +28,7 @@ exports.createPost = (req, res, next) => {
 
 // Modify a post
 exports.modifyPost = (req, res, next) => {
+  console.log('modifyPost');
   let postObject; // Init a variable to store post data
   if (req.body.post) {
     // If user uploaded an image, post data will be in body.post
@@ -40,14 +40,13 @@ exports.modifyPost = (req, res, next) => {
 
   // Find the post in the database by its id
   postModel.findOne(req.params.id).then((post) => {
-    console.log('found post', post)
     if (!post) {
       res.status(404).json({
         error: new Error("No such post!"),
       });
     }
     // Check if the user editing the post is different than the one who created it
-    if (post.id_user !== req.auth.postId) {
+    if (post.id_user !== req.auth.userId && !req.auth.user.is_admin) {
       res.status(403).json({
         error: new Error("Unauthorized request!"),
       });
@@ -61,7 +60,7 @@ exports.modifyPost = (req, res, next) => {
         ...postObject,
         // Using a ternary operator to update the image if it has been updated
         image_url: req.file
-          ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+          ? `/images/${req.file.filename}`
           : undefined,
       }
     )
@@ -95,7 +94,7 @@ exports.deletePost = (req, res, next) => {
         error: new Error("No such post!"),
       });
     }
-    if (post.id_user !== req.auth.userId) {
+    if (post.id_user !== req.auth.userId && !req.auth.user.is_admin) {
       res.status(403).json({
         error: new Error("Unauthorized request!"),
       });
@@ -150,8 +149,6 @@ exports.like = (req, res, next) => {
   console.log('coucou')
   // Like present in the body
   let like = req.body.like;
-  // Get userID
-  let userId = req.body.userId;
 
   postModel.findOne(req.params.id)
     .then((post) => {
@@ -161,7 +158,7 @@ exports.like = (req, res, next) => {
       if (like === 1) {
         console.log('like = 1');
         // Check that the user didn't already liked the post
-        if (!post.usersliked.includes(userId)) {
+        if (!post.usersliked.includes(req.auth.userId)) {
           console.log('Will addLike');
           postModel.addLike(req.params.id, req.auth.userId)
             .then(() => {
@@ -184,7 +181,11 @@ exports.like = (req, res, next) => {
       
       // cancel a like 
       if (like === 0) {
-        if (post.usersliked.includes(userId)) {
+        console.log('Unlike')
+        console.log('post.usersliked', post.usersliked)
+        console.log('req.auth.userId', req.auth.userId)
+        if (post.usersliked.includes(req.auth.userId)) {
+          console.log('sdfgd');
           // If it's about canceling a like
           postModel.removeLike(req.params.id, req.auth.userId)
           .then(() => {

@@ -37,7 +37,7 @@ function SignUp() {
   return (
     <NotConnected>
       {/* <div className="Login"> */}
-      <div className="SignUp">
+      <div class="mb-3">
         <form onSubmit={handleSubmit} className="SignUp-form">
           <label>
             Prénom :

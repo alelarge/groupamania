@@ -9,6 +9,7 @@ const getInitialSate = () => {
     firstname: null,
     lastname: null,
     email: null,
+    isAdmin: false,
   };
   const authJson = localStorage.getItem('auth');
 
@@ -16,7 +17,8 @@ const getInitialSate = () => {
     const auth  = JSON.parse(authJson);
     initialState.isAuthenticated = true;
     initialState.token = auth.token;
-    initialState.userId = auth.userId
+    initialState.userId = auth.userId;
+    initialState.isAdmin = auth.isAdmin;
   }
 
   return initialState;
@@ -43,11 +45,13 @@ export const userSlice = createSlice({
 
         state.token = action.payload.token;
         state.userId = action.payload.userId;
+        state.isAdmin = action.payload.isAdmin;
         state.isAuthenticated = true;
 
         localStorage.setItem('auth', JSON.stringify({
           token: action.payload.token,
-          userId: action.payload.userId
+          userId: action.payload.userId,
+          isAdmin: action.payload.isAdmin,
         }));
       })
       .addMatcher(userApi.endpoints.login.matchRejected, (state, action) => {

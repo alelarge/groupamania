@@ -5,14 +5,12 @@ import {
   } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
-// import styled from 'styled-components'
 // import logo from '../assets/logo.png'
 
 
 function LoggedIn({ children }) {
     const navigate = useNavigate();
     const auth = useSelector((state) => state.auth);
-    console.log('auth', auth);
 
     useEffect(() => {
         if(!auth.isAuthenticated){
@@ -26,9 +24,6 @@ function LoggedIn({ children }) {
         navigate('/login');
     }
 
-    // const groupamaniaBanner = styled.span`
-    // `
-
     return (
         <div className="LoggedIn">
             <header className="LoggedIn-header">
@@ -38,7 +33,7 @@ function LoggedIn({ children }) {
                     <h1 className='groupamania-title'>{title}</h1>
                 </div> */}
                     <ol>
-                        <li className="LoggedIn__nav__item"><a href="#">Groupomania</a></li>
+                        <li className="LoggedIn__nav__item"><Link to="/homepage">Groupomania</Link></li>
                         <li className="LoggedIn__nav__item"><Link to="/post/create">Créer un post</Link></li>
                         <li className="LoggedIn__nav__item"><a onClick={handleLogout} href="#">Se déconnecter</a></li>
                     </ol>

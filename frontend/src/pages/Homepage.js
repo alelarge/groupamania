@@ -10,10 +10,10 @@ import {
 
 
 function Homepage() {
-    console.log('homepage');
+    // console.log('homepage');
     const { data: posts, isLoading } = useGetPostsQuery();
-    console.log('isLoading', isLoading);
-    console.log('posts', posts);
+    // console.log('isLoading', isLoading);
+    // console.log('posts', posts);
 
     if (isLoading) {
         return <div>Loading...</div>

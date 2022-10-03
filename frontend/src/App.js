@@ -9,6 +9,9 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Homepage from './pages/Homepage';
 import { AddPost } from './pages/Post';
+import { ModifyPost } from './pages/Post';
+//import PostManager from './pages/PostManager';
+
 
 function App() {
   return (
@@ -20,6 +23,7 @@ function App() {
             <Route path="/create-account" element={<Signup />} />
             <Route path="/homepage" element={<Homepage />} />
             <Route path="/post/create" element={<AddPost />} />
+            <Route path="/post/:postId/modify" element={<ModifyPost />} />
         </Routes>
       </BrowserRouter>
     </div>
