@@ -26,18 +26,16 @@ function LoggedIn({ children }) {
 
     return (
         <div className="container LoggedIn">
-            <header className="LoggedIn-header">
-                <nav className="LoggedIn__nav">
+            <header className="row LoggedIn-header">
                 {/* <div className='groupamania-banner'>
                     <img src={logo} alt='groupamania' className='groupamania-logo />
                     <h1 className='groupamania-title'>{title}</h1>
                 </div> */}
-                    <ol>
-                        <li className="LoggedIn__nav__item"><Link to="/homepage">Groupomania</Link></li>
-                        <li className="LoggedIn__nav__item"><Link to="/post/create">Créer un post</Link></li>
-                        <li className="LoggedIn__nav__item"><a onClick={handleLogout} href="#">Se déconnecter</a></li>
-                    </ol>
-                </nav>
+                <ul className="nav">
+                    <li className="nav-item"><Link className="nav-link" to="/homepage">Groupomania</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to="/post/create">Créer un post</Link></li>
+                    <li className="nav-item"><a className="nav-link" onClick={handleLogout} href="#">Se déconnecter</a></li>
+                </ul>
             </header>
             <section className="LoggedIn-content">
                 {children}
