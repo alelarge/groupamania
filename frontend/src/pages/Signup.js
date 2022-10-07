@@ -38,6 +38,9 @@ function SignUp() {
     <NotConnected>
       <div className="Signup">
         <div className="card">
+          <div class="card-header text-center">
+              <h2>Signup</h2>
+          </div>
           <div className="card-body">
             <form onSubmit={handleSubmit} className="Signup-form">
               <div class="mb-3 text-start">

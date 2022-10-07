@@ -27,10 +27,6 @@ function LoggedIn({ children }) {
     return (
         <div className="container LoggedIn">
             <header className="row LoggedIn-header">
-                {/* <div className='groupamania-banner'>
-                    <img src={logo} alt='groupamania' className='groupamania-logo />
-                    <h1 className='groupamania-title'>{title}</h1>
-                </div> */}
                 <ul className="nav">
                     <li className="nav-item"><Link className="nav-link" to="/homepage">Groupomania</Link></li>
                     <li className="nav-item"><Link className="nav-link" to="/post/create">Créer un post</Link></li>

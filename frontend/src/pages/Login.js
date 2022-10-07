@@ -33,9 +33,12 @@ function Login() {
         <NotConnected>
             <div className="Login">
                 <div className="card">
+                    <div class="card-header text-center">
+                        <h2>Login</h2>
+                    </div>
                     <div className="card-body">
                         <form onSubmit={handleSubmit} className="Login-form">
-                            <div class="mb-3 text-start">
+                            <div className="mb-3 text-start">
                                 <label className="form-label">Adresse email :</label>
                                 <input
                                     className="form-control"
@@ -47,7 +50,7 @@ function Login() {
                                     placeholder="Tapez votre email"
                                 />
                             </div>
-                            <div class="mb-3 text-start">
+                            <div className="mb-3 text-start">
                                 <label>Mot de passe :</label>
                                 <input
                                     className="form-control"

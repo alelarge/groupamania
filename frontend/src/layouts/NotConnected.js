@@ -1,11 +1,12 @@
+//import logo from '../../public/icon-above-font.png';
+
 function NotConnected({children}) {
     return (
       <div className="container NotConnected">
         <div class="row">
           <div class="col">
-            <header className="NotConnected-header">
-              {/* <img src={logo} className="NotConnected-logo" alt="logo" /> */}
-              <h1>Groupomania</h1>
+            <header className="NotConnected-header text-center">
+              <img style={{width:'250px', margin: '25px'}} src='/icon-left-font.png' className="NotConnected-logo" alt="logo" />
             </header>
           </div>
         </div>
