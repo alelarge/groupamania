@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import logo from './logo.svg';
-import './App.scss';
+// import './App.scss';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Homepage from './pages/Homepage';

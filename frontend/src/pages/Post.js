@@ -29,7 +29,7 @@ export const AddPost = () => {
   }
 
   const handleChangeImage = ({ target }) => {
-    console.log('file', target.files);
+    // console.log('file', target.files);
     setImage(target.files[0]);
   }
 
@@ -47,14 +47,6 @@ export const AddPost = () => {
   }
 
   return (
-    //  <div>
-    //    { {props.data.id_user === auth.userId &&
-    //             <>
-    //                 <button onClick={modifyPost}>Modifier</button>
-    //                 <button onClick={handleDeletePost}>Supprimer</button>
-    //             </>
-  // }
-    // </div> 
     <LoggedIn>
       <form onSubmit={handleSubmit}>
         <input

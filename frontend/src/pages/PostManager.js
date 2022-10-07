@@ -64,10 +64,6 @@ function PostManager(props) {
     }
 
     return (
-        // <div>
-        //     {addpost}
-        //     {modifypost}
-        // </div>
         <LoggedIn>
             <form onSubmit={handleSubmit}>
                 <input
