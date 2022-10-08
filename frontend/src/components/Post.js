@@ -17,9 +17,9 @@ function Post(props) {
     const [deletePost, { isLoadingDeletePost }] = useDeletePostMutation()
     const [likePost, { isLoadingLikePost }] = useLikePostMutation()
     const [unlikePost, { isLoadingUnlikePost }] = useUnlikePostMutation()
-    console.log('auth', auth);
-    console.log('props.data.usersliked', props.data.usersliked);
-    console.log('props.data.id_user', props.data.id_user);
+    // console.log('auth', auth);
+    // console.log('props.data.usersliked', props.data.usersliked);
+    // console.log('props.data.id_user', props.data.id_user);
 
     const modifyPost = () => {
         navigate(`/post/${props.data.id}/modify`);
@@ -48,19 +48,21 @@ function Post(props) {
                     <h1 className="card-title">{props.data.title}</h1>
                     <h2 className="card-title">{props.data.content}</h2>
                     <p className="card-text">{props.data.likes}</p>
-                    {props.data.usersliked.includes(auth.userId) &&
-                        <button className="btn btn-primary" onClick={handleUnlikePost}>Unlike</button>
-                    }
-                    {!props.data.usersliked.includes(auth.userId) &&
-                        <button className="btn btn-primary" onClick={handlelikePost}>Like</button>
-                    }
-                    {(props.data.id_user === auth.userId || auth.isAdmin) &&
-                        <>
-                            <button className="btn btn-primary" onClick={modifyPost}>Modifier</button>
-                            <button className="btn btn-primary" onClick={handleDeletePost}>Supprimer</button>
-                        </>
-                    }
-                    <hr />
+                    <div class="d-grid gap-2">
+                        {props.data.usersliked.includes(auth.userId) &&
+                            <button className="btn btn-primary" onClick={handleUnlikePost}>Unlike</button>
+                        }
+                        {!props.data.usersliked.includes(auth.userId) &&
+                            <button className="btn btn-primary" onClick={handlelikePost}>Like</button>
+                        }
+                        {(props.data.id_user === auth.userId || auth.isAdmin) &&
+                            <>
+                                <button className="btn btn-primary" onClick={modifyPost}>Modifier</button>
+                                <button className="btn btn-primary" onClick={handleDeletePost}>Supprimer</button>
+                            </>
+                        }
+                        <hr />
+                    </div>
                 </div>
             </div>
         </div>

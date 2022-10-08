@@ -48,25 +48,41 @@ export const AddPost = () => {
 
   return (
     <LoggedIn>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          placeholder="New post name"
-          type="text"
-          onChange={handleChange}
-          value={post.title}
-        />
-        <textarea 
-          name="content" 
-          onChange={handleChange}
-          value={post.content}
-        >
-        </textarea>
-        <input type="file" name="image" onChange={handleChangeImage}></input>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Post'}
-        </button>
-      </form>
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <div className="mb-3">
+            <h1>Ajoutez un nouveau post</h1>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <input
+                className="form-control"
+                name="title"
+                placeholder="Titre"
+                type="text"
+                onChange={handleChange}
+                value={post.title}
+              />
+            </div>
+            <div className="mb-3">
+              <textarea
+                className="form-control"
+                name="content" 
+                placeholder="Contenu"
+                onChange={handleChange}
+                value={post.content}
+              >
+            </textarea>
+            </div>
+            <div className="mb-3">
+              <input className="form-control" type="file" name="image" onChange={handleChangeImage}></input>
+            </div>
+            <button className="btn btn-primary" type="submit" disabled={isLoading}>
+              {isLoading ? 'Adding...' : 'Ajouter'}
+            </button>
+          </form>
+        </div>
+      </div>
     </LoggedIn>
   )
 }
@@ -120,25 +136,41 @@ export const ModifyPost = (params) => {
 
   return (
     <LoggedIn>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          placeholder="New post name"
-          type="text"
-          onChange={handleChange}
-          value={post.title}
-        />
-        <textarea 
-          name="content" 
-          onChange={handleChange}
-          value={post.content}
-        >
-        </textarea>
-        <input type="file" name="image" onChange={handleChangeImage}></input>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Update'}
-        </button>
-      </form>
+       <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <div className="mb-3">
+            <h1>Modifier un post</h1>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <input
+                className="form-control"
+                name="title"
+                placeholder="Modifier le titre"
+                type="text"
+                onChange={handleChange}
+                value={post.title}
+              />
+            </div>
+            <div className="mb-3">
+              <textarea 
+                className="form-control"
+                name="content" 
+                placeholder="Modifier le contenu"
+                onChange={handleChange}
+                value={post.content}
+              >
+              </textarea>
+            </div>
+            <div className="mb-3">
+              <input className="form-control" type="file" name="image" onChange={handleChangeImage}></input>
+            </div>
+            <button  className="btn btn-primary" type="submit" disabled={isLoading}>
+              {isLoading ? 'Adding...' : 'Modifier'}
+            </button>
+          </form>
+        </div>
+      </div>
     </LoggedIn>
   )
 }

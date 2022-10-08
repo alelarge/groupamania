@@ -18,14 +18,19 @@ function Homepage() {
 
     return (
         <LoggedIn>
-            {/* <div className="Login"> */}
             <div className="Homepage">
-                <h1>Hello Homepage</h1>
-                <section className="Homepage__postList">
-                    {posts.map((post) => (
-                        <Post data={post} key={post.id}></Post>
-                    ))}
-                </section>
+                <div className="row">
+                    <div className="col-md-6 offset-md-3">
+                        <div className="mb-3">
+                        <h1>Hello Homepage</h1>
+                        </div>
+                        <section className="Homepage__postList">
+                            {posts.map((post) => (
+                                <Post data={post} key={post.id}></Post>
+                            ))}
+                        </section>
+                    </div>
+                </div>
             </div>
         </LoggedIn>
     );
