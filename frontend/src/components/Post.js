@@ -8,7 +8,9 @@ import {
     useUnlikePostMutation,
 } from './../services/post'
 import PropTypes from 'prop-types';
-// import { useFetch } from '../utils/hooks'
+import { format, formatDistance, parseISO, formatRelative, subDays } from 'date-fns'
+import { fr } from 'date-fns/locale'
+
 
 function Post(props) {
     const [post, updatePost] = useState("");
@@ -38,7 +40,7 @@ function Post(props) {
     const handlelikePost = async () => {
         await likePost(props.data.id);
     }
-    console.log('auth', auth);
+    console.log('props', props);
 
     return (
         <div className="Post">
@@ -46,6 +48,7 @@ function Post(props) {
                 <img src={`${process.env.REACT_APP_API_BASE_URL}${props.data.image_url}`} className="card-img-top" />
                 <div className="card-body">
                     <h1 className="card-title">{props.data.title}</h1>
+                        <p>{formatDistance(parseISO(props.data.created_on), new Date(), { addSuffix: true, locale: fr })}</p>
                     <h2 className="card-title">{props.data.content}</h2>
                     <p className="card-text">{props.data.likes}</p>
                     <div class="d-grid gap-2">
