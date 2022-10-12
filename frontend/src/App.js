@@ -4,6 +4,7 @@ import {
   Route,
 } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Homepage from './pages/Homepage';

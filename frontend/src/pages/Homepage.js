@@ -22,7 +22,7 @@ function Homepage() {
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
                         <div className="mb-3">
-                        <h1>Hello Homepage</h1>
+                            <h1>Fil d'actualité</h1>
                         </div>
                         <section className="Homepage__postList">
                             {posts.map((post) => (
