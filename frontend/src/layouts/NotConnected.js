@@ -3,16 +3,16 @@
 function NotConnected({children}) {
     return (
       <div className="container NotConnected">
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
             <header className="NotConnected-header text-center">
               <img style={{width:'250px', margin: '25px'}} src='/icon-left-font.png' className="NotConnected-logo" alt="logo" />
             </header>
           </div>
         </div>
         
-        <div class="row">
-          <div class="col-md-4 offset-md-4">
+        <div className="row">
+          <div className="col-md-4 offset-md-4">
             <section className="NotConnected-form-container">
               {children}
             </section>

@@ -25,7 +25,7 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+
     signup({
       password: password,
       email: email,
@@ -38,15 +38,17 @@ function SignUp() {
     <NotConnected>
       <div className="Signup">
         <div className="card">
-          <div class="card-header text-center">
+          <div className="card-header text-center">
               <h2>Signup</h2>
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmit} className="Signup-form">
-              <div class="mb-3 text-start">
-                <label className="form-label">Prénom :</label>
+              <div className="mb-3 text-start">
+                <label htmlFor="inputFirstname" className="form-label form-label">Prénom :</label>
                 <input
-                  className="form-control"
+                  className="form-control" 
+                  id="inputFirstname" 
+                  required
                   type="text"
                   onChange={(e) => {
                     updateName(e.target.value);
@@ -54,11 +56,16 @@ function SignUp() {
                   value={name}
                   placeholder="Tapez votre nom"
                 />
+                <div className="valid-feedback">
+                  Looks good!
+                </div>
               </div>
-              <div class="mb-3 text-start">
-                <label className="form-label">Nom :</label>
+              <div className="mb-3 text-start">
+                <label htmlFor="inputLastname" className="form-label">Nom :</label>
                 <input
                   className="form-control"
+                  required
+                  id="inputLastname"
                   type="text"
                   onChange={(e) => {
                     updateLastName(e.target.value);
@@ -68,10 +75,12 @@ function SignUp() {
                 />
               </div>
 
-              <div class="mb-3 text-start">
-                <label>Adresse email :</label>
+              <div className="mb-3 text-start">
+                <label htmlFor="inputemail" className="form-label">Adresse email :</label>
                 <input
                   className="form-control"
+                  required
+                  id="inputemail"
                   type="email"
                   onChange={(e) => {
                     updateEmail(e.target.value);
@@ -81,10 +90,12 @@ function SignUp() {
                 />
               </div>
 
-              <div class="mb-3 text-start">
-                <label>Mot de passe : </label>
+              <div className="mb-3 text-start">
+                <label htmlFor="inputPassword" className="form-label">Mot de passe : </label>
                 <input
                   className="form-control"
+                  required
+                  id="inputPassword"
                   type="password"
                   onChange={(e) => {
                     updatePassword(e.target.value);
@@ -94,10 +105,12 @@ function SignUp() {
                 />
               </div>
 
-              <div class="mb-3 text-start">
-                <label>Confirmer le mot de passe :</label>
+              <div className="mb-3 text-start">
+                <label htmlFor="inputPasswordConfirmed" className="form-label">Confirmer le mot de passe :</label>
                 <input
                   className="form-control"
+                  required
+                  id="inputPasswordConfirmed"
                   type="password"
                   onChange={(e) => {
                     updatePasswordConfirmed(e.target.value);
