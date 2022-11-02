@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
-// import { Link } from "react-router-dom";
 import LoggedIn from "../layouts/LoggedIn";
 import Post from "../components/Post";
 import {
-    useGetPostsMutation,
     useGetPostsQuery,
   } from '../services/post'
 

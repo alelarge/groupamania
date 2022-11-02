@@ -1,5 +1,3 @@
-//import logo from '../../public/icon-above-font.png';
-
 function NotConnected({children}) {
     return (
       <div className="container NotConnected">

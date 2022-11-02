@@ -28,14 +28,8 @@ export const userApi = api.injectEndpoints({
 
 
 export const {
-  // useAddPostMutation,
-  // useDeletePostMutation,
-  // useGetPostQuery,
-  // useGetPostsQuery,
   useLoginMutation,
   useSignupMutation,
-  //useUpdatePostMutation,
-  //useGetErrorProneQuery,
 } = userApi
 
 export const {

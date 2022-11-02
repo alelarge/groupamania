@@ -37,12 +37,7 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(userApi.endpoints.login.matchPending, (state, action) => {
-        console.log('pending', action);
-      })
       .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
-        console.log('fulfilled', action);
-
         state.token = action.payload.token;
         state.userId = action.payload.userId;
         state.isAdmin = action.payload.isAdmin;
@@ -53,9 +48,6 @@ export const userSlice = createSlice({
           userId: action.payload.userId,
           isAdmin: action.payload.isAdmin,
         }));
-      })
-      .addMatcher(userApi.endpoints.login.matchRejected, (state, action) => {
-        console.log('rejected', action);
       })
   },
 });

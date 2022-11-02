@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LoggedIn from "../layouts/LoggedIn";
 import {
   useAddPostMutation,
   useModifyPostMutation,
   useGetOnePostQuery,
 } from './../services/post';
+import { useForm } from "react-hook-form";
 
 export const PostManager = (props) => {
   const navigate = new useNavigate();
@@ -14,45 +14,30 @@ export const PostManager = (props) => {
   const [isPostDataSet, setIsPostDataSet] = useState(false);
   let { postId } = useParams();
   const { data: postData, isLoading } = useGetOnePostQuery(postId);
-  const [image, setImage] = useState();
-  const [post, setPost] = useState(initialValue);
   const [addPost, { isLoadingAddPost }] = useAddPostMutation();
   const [modifyPost, { isLoadingModifyPost }] = useModifyPostMutation();
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({
+    defaultValues: initialValue
+  });
 
   useEffect(() => {
     if (!isLoading && !isPostDataSet && props.action === 'modify') {
       setIsPostDataSet(true);
-      setPost(postData);
+      reset(postData);
     }
   });
     
-  if (props.action === 'modify' && (isLoading || !post)) {
+  if (props.action === 'modify' && (isLoading || !postData)) {
     return <div>Loading...</div>
   }
 
-  const handleChange = ({ target }) => {
-    setPost((prev) => ({
-      ...prev,
-      [target.name]: target.value,
-    }))
-  }
-
-  const handleChangeImage = ({ target }) => {
-    // console.log('file', target.files);
-    setImage(target.files[0]);
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
+  const onSubmit = async (data) => {
     const newPost = new FormData();    
-    newPost.append("image", image);
-    newPost.append("post", JSON.stringify(post));
+    newPost.append("image", data.image[0]);
+    newPost.append("post", JSON.stringify({ content: data.content, title: data.title }));
 
-    // console.log('postId', postId);
     if (props.action === 'add') {
       await addPost(newPost)
-      setPost(initialValue)
     } else if (props.action === 'modify') {
       await modifyPost({ body: newPost, id: postId })
     }
@@ -65,34 +50,45 @@ export const PostManager = (props) => {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <div className="mb-3">
-            <h1>Ajoutez un nouveau post</h1>
+            {props.action === 'modify' &&
+              <h1>Modifier un nouveau post</h1>
+            }
+            {props.action === 'add' &&
+              <h1>Ajouter un nouveau post</h1>
+            }
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-3">
               <input
                 className="form-control"
                 name="title"
                 placeholder="Titre"
                 type="text"
-                onChange={handleChange}
-                value={post.title}
+                {...register("title", { required: true })}
               />
+              {errors.title && <span className="invalid-input">Ce champ est requis</span>}
             </div>
             <div className="mb-3">
               <textarea
                 className="form-control"
                 name="content" 
                 placeholder="Contenu"
-                onChange={handleChange}
-                value={post.content}
+                {...register("content", {required: true})}
               >
-            </textarea>
+              </textarea>
+              {errors.content && <span className="invalid-input">Ce champ est requis</span>}
             </div>
             <div className="mb-3">
-              <input className="form-control" type="file" name="image" onChange={handleChangeImage}></input>
+              <input 
+                className="form-control" 
+                type="file" 
+                name="image" 
+                {...register("image", {required: true})}
+              ></input>
+              {errors.image && <span className="invalid-input">Ce champ est requis</span>}
             </div>
             <button className="btn btn-primary" type="submit" disabled={isLoading}>
-              {isLoading ? 'Adding...' : 'Ajouter'}
+              Valider
             </button>
           </form>
         </div>

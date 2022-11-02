@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSelector } from 'react-redux';
-import NotConnected from "../layouts/NotConnected";
 import { Navigate, useNavigate } from 'react-router-dom';
 import {
     useDeletePostMutation,
@@ -19,9 +18,6 @@ function Post(props) {
     const [deletePost, { isLoadingDeletePost }] = useDeletePostMutation()
     const [likePost, { isLoadingLikePost }] = useLikePostMutation()
     const [unlikePost, { isLoadingUnlikePost }] = useUnlikePostMutation()
-    // console.log('auth', auth);
-    // console.log('props.data.usersliked', props.data.usersliked);
-    // console.log('props.data.id_user', props.data.id_user);
 
     const modifyPost = () => {
         navigate(`/post/${props.data.id}/modify`);
@@ -33,14 +29,11 @@ function Post(props) {
 
     const handleUnlikePost = async () => {
         await unlikePost(props.data.id);
-
-        console.log('unlike');
     }
 
     const handlelikePost = async () => {
         await likePost(props.data.id);
     }
-    console.log('props', props);
 
     return (
         <div className="Post mb-3">

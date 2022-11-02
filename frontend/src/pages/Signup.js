@@ -1,36 +1,28 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "react-router-dom";
 import {
   useSignupMutation,
 } from '../services/user'
 import NotConnected from "../layouts/NotConnected";
+import { useForm } from "react-hook-form";
 
 function SignUp() {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const [lastName, updateLastName] = useState("");
-  const [name, updateName] = useState("");
-  const [email, updateEmail] = useState("");
-  const [password, updatePassword] = useState("");
-  const [passwordConfirmed, updatePasswordConfirmed] = useState("");
   const [signup, { isSuccess }] = useSignupMutation();
   useEffect(() => {
-    console.log('useEffect')
     if (isSuccess) {
-      console.log('isSuccess')
       navigate('/login');
     }
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const onSubmit = (data) => {
     signup({
-      password: password,
-      email: email,
-      firstname: name,
-      lastname: lastName
+      password: data.password,
+      email: data.email,
+      firstname: data.firstname,
+      lastname: data.lastname
     });
   };
 
@@ -42,82 +34,74 @@ function SignUp() {
               <h2>Signup</h2>
           </div>
           <div className="card-body">
-            <form onSubmit={handleSubmit} className="Signup-form">
+            <form onSubmit={handleSubmit(onSubmit)} className="Signup-form">
               <div className="mb-3 text-start">
-                <label htmlFor="inputFirstname" className="form-label form-label">Prénom :</label>
+                <label htmlFor="inputFirstname" className="form-label">Prénom :</label>
                 <input
                   className="form-control" 
                   id="inputFirstname" 
-                  required
                   type="text"
-                  onChange={(e) => {
-                    updateName(e.target.value);
-                  }}
-                  value={name}
-                  placeholder="Tapez votre nom"
+                  placeholder="Tapez votre prénom"
+                  {...register("firstname", { required: true })}
                 />
-                <div className="valid-feedback">
-                  Looks good!
-                </div>
+                {errors.firstname && <span className="invalid-input">Ce champ est requis</span>}
               </div>
               <div className="mb-3 text-start">
                 <label htmlFor="inputLastname" className="form-label">Nom :</label>
                 <input
                   className="form-control"
-                  required
                   id="inputLastname"
                   type="text"
-                  onChange={(e) => {
-                    updateLastName(e.target.value);
-                  }}
-                  value={lastName}
-                  placeholder="Tapez votre prénom"
+                  placeholder="Tapez votre nom"
+                  {...register("lastname", { required: true })}
                 />
+                 {errors.lastname && <span className="invalid-input">Ce champ est requis</span>}
               </div>
 
               <div className="mb-3 text-start">
                 <label htmlFor="inputemail" className="form-label">Adresse email :</label>
                 <input
                   className="form-control"
-                  required
                   id="inputemail"
                   type="email"
-                  onChange={(e) => {
-                    updateEmail(e.target.value);
-                  }}
-                  value={email}
                   placeholder="Tapez votre adresse mail"
+                  {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                 />
+                  {errors.email && <span className="invalid-input">Ce champ est requis</span>}
+
               </div>
 
               <div className="mb-3 text-start">
                 <label htmlFor="inputPassword" className="form-label">Mot de passe : </label>
                 <input
                   className="form-control"
-                  required
                   id="inputPassword"
                   type="password"
-                  onChange={(e) => {
-                    updatePassword(e.target.value);
-                  }}
-                  value={password}
                   placeholder="Tapez votre mot de passe"
+                  {...register("password", { required: true })}
                 />
+                {errors.password && <span className="invalid-input">Ce champ est requis</span>}
+
               </div>
 
               <div className="mb-3 text-start">
                 <label htmlFor="inputPasswordConfirmed" className="form-label">Confirmer le mot de passe :</label>
                 <input
                   className="form-control"
-                  required
                   id="inputPasswordConfirmed"
                   type="password"
-                  onChange={(e) => {
-                    updatePasswordConfirmed(e.target.value);
-                  }}
-                  value={passwordConfirmed}
                   placeholder="Confirmez votre mot de passe"
+                  {...register("passwordConfirmed", { 
+                    required: true,
+                    validate: (value) => {
+                      if (watch('password') != value) {
+                        return "Your passwords do no match";
+                      }
+                    },
+                  })}
                 />
+                {errors.passwordConfirmed && <span className="invalid-input">Les deux champs doivent être identiques</span>}
+
               </div>
               <input className="btn btn-primary" type="submit" value="Envoyer" />
             </form>

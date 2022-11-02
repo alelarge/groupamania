@@ -11,15 +11,8 @@ export const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(postApi.endpoints.getPosts.matchPending, (state, action) => {
-        console.log('pending', action);
-      })
       .addMatcher(postApi.endpoints.getPosts.matchFulfilled, (state, action) => {
-        console.log('fulfilled getPosts', action.payload);
         state = action.payload;
-      })
-      .addMatcher(postApi.endpoints.getPosts.matchRejected, (state, action) => {
-        console.log('rejected', action);
       })
   },
 });

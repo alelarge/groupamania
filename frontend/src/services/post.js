@@ -14,9 +14,7 @@ export const postApi = api.injectEndpoints({
       query: (body) => ({
         url: 'post',
         method: 'POST',
-        headers: {
-          //'content-type': 'multipart/form-data',
-        },
+        headers: {},
         body,
       }),
       invalidatesTags: ['Posts'],

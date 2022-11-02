@@ -11,8 +11,6 @@ import Signup from './pages/Signup';
 import Homepage from './pages/Homepage';
 import { AddPost } from './pages/Post';
 import { ModifyPost } from './pages/Post';
-//import PostManager from './pages/PostManager';
-
 
 function App() {
   return (
