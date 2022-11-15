@@ -8,7 +8,6 @@ const auth = require("../middleware/auth");
 
 // Create a post
 exports.createComment = (req, res, next) => {
-  console.log('createComment', req.body)
   // Get the post data
   const commentObject = req.body;
 
@@ -23,7 +22,6 @@ exports.createComment = (req, res, next) => {
     .create(newComment)
     .then(() => res.status(201).json({ message: "Commentaire enregistré!" }))
     .catch((error) => {
-      console.log('error', error);
       res.status(400).json({ error })
     });
 };
@@ -41,7 +39,6 @@ exports.modifyComment = (req, res, next) => {
 
   // Find the comment in the database by its id
   commentModel.findOne(req.params.id).then((comment) => {
-    console.log('found comment', comment)
     if (!comment) {
       res.status(404).json({
         error: new Error("No such comment!"),
@@ -68,20 +65,16 @@ exports.modifyComment = (req, res, next) => {
     )
       .then(() => {
         if (req.file) {
-          console.log('file to upload', comment)
           // Split the image url on "/"
           let splitedUrl = post.image_url.split("/");
           // Get the last segment (image name)
           let filename = splitedUrl[splitedUrl.length - 1];
           // Delete the old image from the server
-          console.log('filename', filename);
           fs.unlink(__dirname + "/../images/" + filename, (err) => {
             if (err) {
-              console.log(err);
             }
           });
         }
-        console.log('return 200')
         res.status(200).json({ message: " Modified post!" });
       })
       .catch((error) => res.status(400).json({ error }));
@@ -106,23 +99,19 @@ exports.deleteComment = (req, res, next) => {
     commentModel.deleteOne(req.params.id)
       .then(() => {
         // Split the image url on "/"
-        console.log('after delete comment', comment);
         let splitedUrl = post.image_url.split("/");
         // Get the last segment (image name)
         let filename = splitedUrl[splitedUrl.length - 1];
         // Delete the old image from the server
         fs.unlink(__dirname + "/../images/" + filename, (err) => {
           if (err) {
-            console.log(err);
           }
         });
-        console.log('Removed image', filename);
         res.status(200).json({
           message: "Deleted!",
         });
       })
       .catch((error) => {
-        console.log('error', error);
         res.status(400).json({
           error: error,
         });

@@ -10,8 +10,6 @@ const pool = require('../db');
 }
 
 exports.getOnePost = async (commentId) => {
-    console.log('commentId', commentId);
-
     let res = await pool.query(`SELECT * FROM comment WHERE id = $1`, 
     [postId,commentId]);
     
@@ -25,8 +23,6 @@ exports.getAllPost = async () => {
 };
 
 exports.findOne = async (id) => {
-    console.log('id', id);
-
     let res = await pool.query(`SELECT * FROM comment WHERE id = $1`,
     [id]);
     
@@ -34,16 +30,12 @@ exports.findOne = async (id) => {
 };
 
 exports.updateOne = async (comment) => {
-    console.log('updateOne comment', comment);
-
     let res = await pool.query(`
         UPDATE post SET content =$1, WHERE id=$2 `, 
     [comment.content, comment.id, post.id]);
 };
 
 exports.deleteOne = async (commentId) => {
-    console.log('deleteOne comment', commentId);
-
     let res = await pool.query(`
         DELETE FROM post WHERE id = $1;
          `, 
@@ -51,16 +43,12 @@ exports.deleteOne = async (commentId) => {
 };
 
 exports.addLike = async (commentId, userId, postId) => {
-    console.log('like',commentId, userId,postId);
-
     let res = await pool.query(`
         UPDATE post SET likes = likes+1, usersliked = array_append(usersliked, $1)  WHERE id = $2`,
     [commentId,userId, postId]);
 }
 
 exports.removeLike = async (commentId, postId, userId) => {
-    console.log('addLike commentId', postId);
-
     let res = await pool.query(`
         UPDATE post SET likes = likes -1, usersliked = array_remove(usersliked, $1)  WHERE id = $2`,
     [userId, postId]);

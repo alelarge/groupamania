@@ -62,7 +62,6 @@ function Post(props) {
                                 <button className="btn btn-primary" onClick={handleDeletePost}>Supprimer</button>
                             </>
                         }
-                        <hr />
                     </div>
                 </div>
             </div>

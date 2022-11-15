@@ -4,9 +4,7 @@ const fs = require("fs");
 
 // Create a post
 exports.createPost = (req, res, next) => {
-  console.log('createPost', typeof req.body.post)
   // Get the post data
-  console.log('req.body', req.body);
   const postObject = JSON.parse(req.body.post);
 
   // Instantiate a new post
@@ -21,14 +19,12 @@ exports.createPost = (req, res, next) => {
     .create(newPost)
     .then(() => res.status(201).json({ message: "Post enregistré!" }))
     .catch((error) => {
-      console.log('error', error);
       res.status(400).json({ error })
     });
 };
 
 // Modify a post
 exports.modifyPost = (req, res, next) => {
-  console.log('modifyPost');
   let postObject; // Init a variable to store post data
   if (req.body.post) {
     // If user uploaded an image, post data will be in body.post
@@ -66,20 +62,16 @@ exports.modifyPost = (req, res, next) => {
     )
       .then(() => {
         if (req.file) {
-          console.log('file to upload', post)
           // Split the image url on "/"
           let splitedUrl = post.image_url.split("/");
           // Get the last segment (image name)
           let filename = splitedUrl[splitedUrl.length - 1];
           // Delete the old image from the server
-          console.log('filename', filename);
           fs.unlink(__dirname + "/../images/" + filename, (err) => {
             if (err) {
-              console.log(err);
             }
           });
         }
-        console.log('return 200')
         res.status(200).json({ message: " Modified post!" });
       })
       .catch((error) => res.status(400).json({ error }));
@@ -104,23 +96,19 @@ exports.deletePost = (req, res, next) => {
     postModel.deleteOne(req.params.id)
       .then(() => {
         // Split the image url on "/"
-        console.log('after delete post', post);
         let splitedUrl = post.image_url.split("/");
         // Get the last segment (image name)
         let filename = splitedUrl[splitedUrl.length - 1];
         // Delete the old image from the server
         fs.unlink(__dirname + "/../images/" + filename, (err) => {
           if (err) {
-            console.log(err);
           }
         });
-        console.log('Removed image', filename);
         res.status(200).json({
           message: "Deleted!",
         });
       })
       .catch((error) => {
-        console.log('error', error);
         res.status(400).json({
           error: error,
         });
@@ -146,20 +134,15 @@ exports.getAllPost = (req, res, next) => {
 
 // Allows you to "like" a post
 exports.like = (req, res, next) => {
-  console.log('coucou')
   // Like present in the body
   let like = req.body.like;
 
   postModel.findOne(req.params.id)
     .then((post) => {
-      console.log('post', post);
-      console.log('like', like);
       // If it's a like
       if (like === 1) {
-        console.log('like = 1');
         // Check that the user didn't already liked the post
         if (!post.usersliked.includes(req.auth.userId)) {
-          console.log('Will addLike');
           postModel.addLike(req.params.id, req.auth.userId)
             .then(() => {
               res.status(200).json({
@@ -181,11 +164,8 @@ exports.like = (req, res, next) => {
       
       // cancel a like 
       if (like === 0) {
-        console.log('Unlike')
-        console.log('post.usersliked', post.usersliked)
-        console.log('req.auth.userId', req.auth.userId)
         if (post.usersliked.includes(req.auth.userId)) {
-          console.log('sdfgd');
+
           // If it's about canceling a like
           postModel.removeLike(req.params.id, req.auth.userId)
           .then(() => {

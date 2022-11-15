@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ function SignUp() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [signup, { isSuccess }] = useSignupMutation();
+  const [isValidEmail, setIsValidEmail] = useState(true);
   useEffect(() => {
     if (isSuccess) {
       navigate('/login');
@@ -23,7 +24,11 @@ function SignUp() {
       email: data.email,
       firstname: data.firstname,
       lastname: data.lastname
-    });
+    }).then(e => {
+      if (e.error) {
+          setIsValidEmail(false);
+      }
+  });;
   };
 
   return (
@@ -68,7 +73,7 @@ function SignUp() {
                   {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
                 />
                   {errors.email && <span className="invalid-input">Ce champ est requis</span>}
-
+                  {!isValidEmail && <div className="invalid-input">Un compte existe déjà pour cette adresse email</div>}
               </div>
 
               <div className="mb-3 text-start">

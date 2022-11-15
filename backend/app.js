@@ -9,13 +9,6 @@ const path = require('path');
 const rateLimit = require("express-rate-limit");
 const pool = require('./db');
 
-
-// pool.query('SELECT * FROM user_account', (err, res) => {
-//     console.log(err, res)
-// });
-
-
-
 // Express middleware to automatically parse JSON contained in the body
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.json());

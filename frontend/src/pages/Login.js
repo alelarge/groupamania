@@ -11,10 +11,12 @@ import { useForm } from "react-hook-form";
 function Login() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const navigate = useNavigate();
+    const [isValidCredential, setIsValidCredential] = useState(true);
     // const [email, updateEmail] = useState("john@doe.com");
-    // const [password, updatePassword] = useState("mikarmelle0912");
+    // const [password, updatePassword] = useState("password");
     const [login, { isSuccess }] = useLoginMutation();
     useEffect(() => {
+        console.log('isSuccess', isSuccess);
         if (isSuccess) {
             navigate('/homepage');
         }
@@ -24,6 +26,10 @@ function Login() {
         login({
             password: data.password,
             email: data.email,
+        }).then(e => {
+            if (e.error) {
+                setIsValidCredential(false);
+            }
         });
     };
 
@@ -57,6 +63,7 @@ function Login() {
                                 {errors.password && <span className="invalid-input">Ce champ est requis</span>}
                             </div>
                             <input className="btn btn-primary" type="submit" value="Envoyer" />
+                            {!isValidCredential && <div className="invalid-input">Email ou mot de passe non valide</div>}
                         </form>
                     </div>
                 </div>
