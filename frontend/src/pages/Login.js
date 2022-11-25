@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import {
     useLoginMutation,
 } from '../services/user'
@@ -16,7 +15,6 @@ function Login() {
     // const [password, updatePassword] = useState("password");
     const [login, { isSuccess }] = useLoginMutation();
     useEffect(() => {
-        console.log('isSuccess', isSuccess);
         if (isSuccess) {
             navigate('/homepage');
         }
@@ -58,7 +56,7 @@ function Login() {
                                     className="form-control"
                                     type="password"
                                     placeholder="Tapez votre mot de passe"
-                                    {...register("password", { required: true })}
+                                    {...register("password", { required: true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/i })}
                                 />
                                 {errors.password && <span className="invalid-input">Ce champ est requis</span>}
                             </div>

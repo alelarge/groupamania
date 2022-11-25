@@ -83,7 +83,7 @@ function SignUp() {
                   id="inputPassword"
                   type="password"
                   placeholder="Tapez votre mot de passe"
-                  {...register("password", { required: true })}
+                  {...register("password", { required: true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/i })}
                 />
                 {errors.password && <span className="invalid-input">Ce champ est requis</span>}
 
@@ -99,7 +99,7 @@ function SignUp() {
                   {...register("passwordConfirmed", { 
                     required: true,
                     validate: (value) => {
-                      if (watch('password') != value) {
+                      if (watch('password') !== value) {
                         return "Your passwords do no match";
                       }
                     },

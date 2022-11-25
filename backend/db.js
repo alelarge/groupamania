@@ -11,16 +11,4 @@ const config = {
 
 const pool = new Pool(config);
 
-//
-// const pool = new Sequelize('postgres', 'postgres', 'root', {
-//   host: '172.17.0.2',
-//   dialect: 'postgres'
-// });
-
-// async function test() {
-//   let [results, metadata] = await pool.query('SELECT * FROM user_account');
-//   console.log('results', results);
-// }
-// test();
-
 module.exports = pool;

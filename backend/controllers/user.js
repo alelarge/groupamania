@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const User =  require('../models/user');
 
 exports.signup = (req, res,next) => {
+    if(!req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/i) || !req.body.email.match(/^\S+@\S+$/i)) {
+        return res.status(401).json({error : 'Invalid email or password' });
+    }
+   
     bcrypt.hash(req.body.password, 10)
        .then(hash => {
            const user = {
@@ -22,7 +26,10 @@ exports.login = (req, res, next) => {
            if(!user){
                return res.status(401).json({error : 'Utilisateur non trouvé!' });
            }
-           bcrypt.compare(req.body.password, user.password)
+           if(!req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*$/i) || !req.body.email.match(/^\S+@\S+$/i)) {
+                return res.status(401).json({error : 'Invalid email or password' });
+            }
+            bcrypt.compare(req.body.password, user.password)
                .then(valid => {
                    if(!valid) {
                        return res.status(401).json({error : 'Mot de passe incorrect!' });

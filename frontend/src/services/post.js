@@ -1,4 +1,3 @@
-import { retry } from '@reduxjs/toolkit/query/react'
 import { api } from './api'
 
 export const postApi = api.injectEndpoints({
